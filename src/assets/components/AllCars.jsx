@@ -5,13 +5,16 @@ const AllCars = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortField, setSortField] = useState(''); // State for sort field
-    const [sortOrder, setSortOrder] = useState(''); // State for sort order
+    const [sortField, setSortField] = useState('ProductCreationDateTime');
+    const [sortOrder, setSortOrder] = useState('desc');
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState('');
+    const [priceRange, setPriceRange] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9&search=${searchQuery}&sortField=${sortField}&sortOrder=${sortOrder}`);
+                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9&search=${searchQuery}&sortField=${sortField}&sortOrder=${sortOrder}&brand=${brand}&category=${category}&priceRange=${priceRange}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -25,7 +28,7 @@ const AllCars = () => {
         };
 
         fetchData();
-    }, [currentPage, searchQuery, sortField, sortOrder]); 
+    }, [currentPage, searchQuery, sortField, sortOrder, brand, category, priceRange]);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -40,51 +43,65 @@ const AllCars = () => {
     };
 
     const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value); 
-        setCurrentPage(1); 
+        setSearchQuery(event.target.value);
+        setCurrentPage(1);
     };
 
-    const handleSortChange = (event) => {
-        const [field, order] = event.target.value.split('-');
+    const handleSortChange = (field) => {
         setSortField(field);
-        setSortOrder(order);
-        setCurrentPage(1); 
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
+
+    const handleFilterChange = (setter) => (event) => {
+        setter(event.target.value);
+        setCurrentPage(1);
     };
 
     return (
         <div className="container mx-auto px-4 font-serif">
-            <h1 className="text-4xl font-bold text-center text-gray-800 mt-8 mb-12">All Cars</h1>
-            
-            {/* Search and Sort Inputs */}
-            <div className="mb-8 text-center flex gap-4 justify-center">
-                <div>
-                    <h2 className='btn bg-[#a00000] text-white rounded-lg'>Search</h2>
-                </div>
+            <h1 className="text-4xl font-bold text-center text-gray-800 mt-8 mb-12">Explore Our Car Collection</h1>
+
+            {/* Search and Filter Inputs */}
+            <div className="mb-8 text-center flex flex-wrap justify-center gap-4">
                 <input 
                     type="text" 
                     placeholder="Search by product name..." 
-                    className="px-4  py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
+                    className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
-               <div className='flex gap-2'>
-                <div>
-                <h2 className='btn bg-[#a00000] text-white rounded-lg'>Sort</h2>
-                </div>
-                <div>
-                <select 
-                    className="px-4 py-3  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]" 
-                    onChange={handleSortChange}
-                >
-                    <option value="">Sort By</option>
-                    <option value="Price-asc">Price: Low to High</option>
-                    <option value="Price-desc">Price: High to Low</option>
-                    <option value="ProductCreationDateTime-desc">Date Added: Newest first</option>
+                <select className="px-4 py-2 border border-gray-300 rounded-md" value={brand} onChange={handleFilterChange(setBrand)}>
+                    <option value="">All Brands</option>
+                    <option value="Tesla">Tesla</option>
+                    {/* Add more brand options here */}
                 </select>
-                </div>
-               </div>
+                <select className="px-4 py-2 border border-gray-300 rounded-md" value={category} onChange={handleFilterChange(setCategory)}>
+                    <option value="">All Categories</option>
+                    <option value="Electric">Electric</option>
+                    {/* Add more category options here */}
+                </select>
+                <select className="px-4 py-2 border border-gray-300 rounded-md" value={priceRange} onChange={handleFilterChange(setPriceRange)}>
+                    <option value="">All Prices</option>
+                    <option value="0-50000">Under $50,000</option>
+                    <option value="50001-100000">$50,001 - $100,000</option>
+                    <option value="100001-150000">$100,001 - $150,000</option>
+                    {/* Add more price ranges here */}
+                </select>
+                <button 
+                    onClick={() => handleSortChange('Price')}
+                    className="bg-[#a00000] text-white px-4 py-2 rounded-md hover:bg-[#a00000c5] transition duration-300"
+                >
+                    Sort by Price {sortField === 'Price' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </button>
+                <button 
+                    onClick={() => handleSortChange('ProductCreationDateTime')}
+                    className="bg-[#a00000] text-white px-4 py-2 rounded-md hover:bg-[#a00000c5] transition duration-300"
+                >
+                    Sort by Date {sortField === 'ProductCreationDateTime' && (sortOrder === 'asc' ? '↑' : '↓')}
+                </button>
             </div>
-            
+
+            {/* Display Cars */}
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map(item => (
                     <div 
@@ -110,21 +127,21 @@ const AllCars = () => {
                     </div>
                 ))}
             </div>
-            <div className="flex justify-center mt-10">
-                <button
-                    onClick={handlePreviousPage}
-                    className="bg-[#a00000] text-white px-4 py-2 rounded-l-md hover:bg-[#a00000c5]  transition duration-300 ease-in-out disabled:opacity-50"
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-12 space-x-4">
+                <button 
+                    onClick={handlePreviousPage} 
                     disabled={currentPage === 1}
+                    className="bg-[#a00000] text-white px-4 py-2 rounded-md hover:bg-[#a00000c5] transition duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                     Previous
                 </button>
-                <span className="bg-black text-white px-4 py-2">
-                    Page {currentPage} of {totalPages}
-                </span>
-                <button
-                    onClick={handleNextPage}
-                    className="bg-[#a00000] text-white px-4 py-2 rounded-r-md hover:bg-[#a00000c5]  transition duration-300 ease-in-out disabled:opacity-50"
+                <span className="text-white rounded-lg p-2 bg-black text-lg">Page {currentPage} of {totalPages}</span>
+                <button 
+                    onClick={handleNextPage} 
                     disabled={currentPage === totalPages}
+                    className="bg-[#a00000] text-white px-4 py-2 rounded-md hover:bg-[#a00000c5] transition duration-300 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                     Next
                 </button>
