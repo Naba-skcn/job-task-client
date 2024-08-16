@@ -4,11 +4,12 @@ const AllCars = () => {
     const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [searchQuery, setSearchQuery] = useState(''); // Add state for the search query
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9`);
+                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9&search=${searchQuery}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -22,7 +23,7 @@ const AllCars = () => {
         };
 
         fetchData();
-    }, [currentPage]);
+    }, [currentPage, searchQuery]); 
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -36,9 +37,31 @@ const AllCars = () => {
         }
     };
 
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value); 
+        setCurrentPage(1); 
+    };
+
     return (
         <div className="container mx-auto px-4 font-serif">
             <h1 className="text-4xl font-bold text-center text-gray-800 mt-8 mb-12">All Cars</h1>
+            
+            {/* Search Input */}
+            <div className="mb-8 text-center flex gap-2">
+                <div>
+                  <h2 className='btn bg-[#a00000] text-white rounded-lg'>Search</h2>
+                </div>
+                <div>
+                <input 
+                    type="text" 
+                    placeholder="Search by product name..." 
+                    className="px-4 mt-1 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                />
+                </div>
+            </div>
+            
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map(item => (
                     <div 
