@@ -4,12 +4,14 @@ const AllCars = () => {
     const [items, setItems] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const [searchQuery, setSearchQuery] = useState(''); // Add state for the search query
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortField, setSortField] = useState(''); // State for sort field
+    const [sortOrder, setSortOrder] = useState(''); // State for sort order
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9&search=${searchQuery}`);
+                const response = await fetch(`http://localhost:5000/cars?page=${currentPage}&limit=9&search=${searchQuery}&sortField=${sortField}&sortOrder=${sortOrder}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }
@@ -23,7 +25,7 @@ const AllCars = () => {
         };
 
         fetchData();
-    }, [currentPage, searchQuery]); 
+    }, [currentPage, searchQuery, sortField, sortOrder]); 
 
     const handleNextPage = () => {
         if (currentPage < totalPages) {
@@ -42,24 +44,45 @@ const AllCars = () => {
         setCurrentPage(1); 
     };
 
+    const handleSortChange = (event) => {
+        const [field, order] = event.target.value.split('-');
+        setSortField(field);
+        setSortOrder(order);
+        setCurrentPage(1); 
+    };
+
     return (
         <div className="container mx-auto px-4 font-serif">
             <h1 className="text-4xl font-bold text-center text-gray-800 mt-8 mb-12">All Cars</h1>
             
-            {/* Search Input */}
-            <div className="mb-8 text-center flex gap-2">
+            {/* Search and Sort Inputs */}
+            <div className="mb-8 text-center flex gap-4 justify-center">
                 <div>
-                  <h2 className='btn bg-[#a00000] text-white rounded-lg'>Search</h2>
+                    <h2 className='btn bg-[#a00000] text-white rounded-lg'>Search</h2>
                 </div>
-                <div>
                 <input 
                     type="text" 
                     placeholder="Search by product name..." 
-                    className="px-4 mt-1 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
+                    className="px-4  py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
                     value={searchQuery}
                     onChange={handleSearchChange}
                 />
+               <div className='flex gap-2'>
+                <div>
+                <h2 className='btn bg-[#a00000] text-white rounded-lg'>Sort</h2>
                 </div>
+                <div>
+                <select 
+                    className="px-4 py-3  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]" 
+                    onChange={handleSortChange}
+                >
+                    <option value="">Sort By</option>
+                    <option value="Price-asc">Price: Low to High</option>
+                    <option value="Price-desc">Price: High to Low</option>
+                    <option value="ProductCreationDateTime-desc">Date Added: Newest first</option>
+                </select>
+                </div>
+               </div>
             </div>
             
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
