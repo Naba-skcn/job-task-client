@@ -5,8 +5,8 @@ const AllCars = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortField, setSortField] = useState('ProductCreationDateTime');
-    const [sortOrder, setSortOrder] = useState('desc');
+    const [sortField, setSortField] = useState('');
+    const [sortOrder, setSortOrder] = useState('');
     const [brand, setBrand] = useState('');
     const [category, setCategory] = useState('');
     const [priceRange, setPriceRange] = useState('');
@@ -48,8 +48,13 @@ const AllCars = () => {
     };
 
     const handleSortChange = (field) => {
-        setSortField(field);
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        if (sortField === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortField(field);
+            setSortOrder('asc');
+        }
+        setCurrentPage(1);
     };
 
     const handleFilterChange = (setter) => (event) => {
@@ -59,17 +64,20 @@ const AllCars = () => {
 
     return (
         <div className="container mx-auto px-4 font-serif">
-            <h1 className="text-4xl font-bold text-center text-gray-800 mt-8 mb-12">Explore Our Car Collection</h1>
+            <h1 className="text-4xl font-bold text-center mt-8 mb-12">Explore Our Car Collection</h1>
 
             {/* Search and Filter Inputs */}
             <div className="mb-8 text-center flex flex-wrap justify-center gap-4">
-                <input 
+                <div className='flex gap-2'>
+                    <div><h2 className='text-white btn rounded-lg bg-[#a00000]'>Search</h2></div>
+                    <div><input 
                     type="text" 
                     placeholder="Search by product name..." 
-                    className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
+                    className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#a00000]"
                     value={searchQuery}
                     onChange={handleSearchChange}
-                />
+                /></div>
+                </div>
                 <select className="px-4 py-2 border border-gray-300 rounded-md" value={brand} onChange={handleFilterChange(setBrand)}>
                     <option value="">All Brands</option>
                     <option value="Tesla">Tesla</option>
