@@ -81,12 +81,46 @@ const AllCars = () => {
                 <select className="px-4 py-2 border border-gray-300 rounded-md" value={brand} onChange={handleFilterChange(setBrand)}>
                     <option value="">All Brands</option>
                     <option value="Tesla">Tesla</option>
-                    {/* Add more brand options here */}
+                    <option value="Lamborghini">Lamborghini</option>
+                    <option value="Ferrari">Ferrari</option>
+                    <option value="Aston Martin">Aston Martin</option>
+                    <option value="Bentley">Bentley</option>
+                    <option value="Porsche">Porsche</option>
+                    <option value="Bugatti">Bugatti</option>
+                    <option value="Rolls-Royce">Rolls-Royce</option>
+                    <option value="McLaren">McLaren</option>
+                    <option value="Land Rover">Land Rover</option>
+                    <option value="Volvo">Volvo</option>
+                    <option value="Jaguar">Jaguar</option>
+                    <option value="Chevrolet">Chevrolet</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Alfa Romeo">Alfa Romeo</option>
+                    <option value="Ram">Ram</option>
+                    <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    <option value="Cadillac">Cadillac</option>
+                    <option value="Jeep">Jeep</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Genesis">Genesis</option>
+                    <option value="Infiniti">Infiniti</option>
+                    <option value="Kia">Kia</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Subaru">Subaru</option>
+                    <option value="Audi">Audi</option>
+                    <option value="Acura">Acura</option>
+                    <option value="Honda">Honda</option>
+                    <option value="Volkswagen">Volkswagen</option>
+                    <option value="Mazda">Mazda</option>
+                    <option value="Nissan">Nissan</option>
+                    <option value="Hyundai">Hyundai</option>
+
                 </select>
                 <select className="px-4 py-2 border border-gray-300 rounded-md" value={category} onChange={handleFilterChange(setCategory)}>
                     <option value="">All Categories</option>
                     <option value="Electric">Electric</option>
-                    {/* Add more category options here */}
+                    <option value="SUV">SUV</option>
+                    <option value="Sedan">Sedan</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Truck">Truck</option>
                 </select>
                 <select className="px-4 py-2 border border-gray-300 rounded-md" value={priceRange} onChange={handleFilterChange(setPriceRange)}>
                     <option value="">All Prices</option>
