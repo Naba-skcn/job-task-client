@@ -161,7 +161,7 @@ const AllCars = () => {
                             <div className="mt-4">
                                 <p className="text-lg text-gray-800"><span className="font-semibold">Brand:</span> {item.BrandName}</p>
                                 <p className="text-lg text-gray-800"><span className="font-semibold">Category:</span> {item.Category}</p>
-                                <p className="text-lg text-green-900"><span className="font-semibold"></span> ${item.Price}</p>
+                                <p className="text-lg text-gray-800"><span className="font-semibold">Price:</span> ${item.Price}</p>
                                 <p className="text-lg text-gray-800"><span className="font-semibold">Ratings:</span> {item.Ratings}</p>
                                 <p className="text-lg text-gray-800"><span className="font-semibold">Added on:</span> {new Date(item.ProductCreationDateTime).toLocaleDateString()}</p>
                             </div>
