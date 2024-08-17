@@ -127,7 +127,6 @@ const AllCars = () => {
                     <option value="0-50000">Under $50,000</option>
                     <option value="50001-100000">$50,001 - $100,000</option>
                     <option value="100001-150000">$100,001 - $150,000</option>
-                    {/* Add more price ranges here */}
                 </select>
                 <button 
                     onClick={() => handleSortChange('Price')}
@@ -159,11 +158,11 @@ const AllCars = () => {
                             <h2 className="text-2xl font-bold text-gray-800">{item.ProductName}</h2>
                             <p className="text-gray-600 mt-2">{item.Description}</p>
                             <div className="mt-4">
-                                <p className="text-lg text-gray-800"><span className="font-semibold">Brand:</span> {item.BrandName}</p>
-                                <p className="text-lg text-gray-800"><span className="font-semibold">Category:</span> {item.Category}</p>
-                                <p className="text-lg text-gray-800"><span className="font-semibold">Price:</span> ${item.Price}</p>
-                                <p className="text-lg text-gray-800"><span className="font-semibold">Ratings:</span> {item.Ratings}</p>
-                                <p className="text-lg text-gray-800"><span className="font-semibold">Added on:</span> {new Date(item.ProductCreationDateTime).toLocaleDateString()}</p>
+                                <p className="text-1xl text-gray-800"><span className="font-semibold">Brand:</span> {item.BrandName}</p>
+                                <p className="text-1xl text-gray-800"><span className="font-semibold">Category:</span> {item.Category}</p>
+                                <p className="text-1xl text-gray-800"><span className="font-semibold">Price:</span> ${item.Price}</p>
+                                <p className="text-1xl text-gray-800"><span className="font-semibold">Ratings:</span> {item.Ratings}</p>
+                                <p className="text-1xl text-gray-800"><span className="font-semibold">Added on:</span> {new Date(item.ProductCreationDateTime).toLocaleDateString()}</p>
                             </div>
                         </div>
                     </div>
